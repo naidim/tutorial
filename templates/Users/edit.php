@@ -22,7 +22,7 @@
           echo $this->Form->control('last_name');
           echo $this->Form->control('password', ['value' => '']);
         ?>
-        <p class="helper">Passwords must be at least 8 characters and contain at least 1 number, 1 uppercase, 1 lowercase and 1 special character</p>
+        <p class="helper">Passwords must be at least 8 characters and contain at least 1 number, 1 uppercase, 1 lowercase, and 1 special character</p>
         <?php
           echo $this->Form->control('confirm_password', ['type' => 'password', 'value' => '']);
           echo $this->Form->control('email');
