@@ -229,4 +229,5 @@ ServerRequest::addDetector('tablet', function ($request) {
 // and https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
 //\Cake\I18n\FrozenDate::setToStringFormat('dd.MM.yyyy');
 //\Cake\I18n\FrozenTime::setToStringFormat('dd.MM.yyyy HH:mm');
+Cake\I18n\Date::setToStringFormat('Y-MM-dd');
 Cake\I18n\DateTime::setToStringFormat('Y-MM-dd HH:mm');
