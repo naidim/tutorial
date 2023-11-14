@@ -62,7 +62,8 @@ class UsersController extends AppController
   {
     $this->Authorization->skipAuthorization();
     $query = $this->Users->find();
-    $users = $this->paginate($query);
+    $users = $this->paginate($this->Authorization->applyScope($query));
+//    $users = $this->paginate($query);
     $this->set(compact('users'));
   }
 
