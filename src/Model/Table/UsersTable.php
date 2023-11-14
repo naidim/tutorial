@@ -69,20 +69,9 @@ class UsersTable extends Table
       ->notEmptyString('email')
       ->add('email', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
-    // $validator
-    //   ->date('dob')
-    //   //->dateTime('dob')
-    //   ->allowEmptyDate('dob'); /*
-      // ->add('dob', 'custom', [
-      //   'rule' => function ($value, $context) {
-      //       // Try to parse the date in m/d/y format
-      //       $parsedDate = date_create_from_format('m/d/y', $value);
-
-      //       // Check if the parsed date is valid
-      //       return $parsedDate !== false && $parsedDate->format('m/d/y') === $value;
-      //   },
-      //   'message' => __('Please enter a valid date in the m/d/y format.'),
-      // ]); */
+    $validator
+      ->date('dob')
+      ->allowEmptyDate('dob');
     
     return $validator;
   }
