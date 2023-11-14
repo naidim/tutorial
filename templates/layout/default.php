@@ -22,8 +22,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        <?= $cakeDescription ?>:
-        <?= $this->fetch('title') ?>
+        <?= $this->fetch('title') ?>:
+        <?= $cakeDescription ?>
     </title>
     <?= $this->Html->meta('icon') ?>
 
