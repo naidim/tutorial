@@ -3,12 +3,14 @@ declare(strict_types = 1);
 
 namespace App\Model\Table;
 
-use Cake\Event\EventInterface;
-use Cake\ORM\Query\SelectQuery;
-use Cake\ORM\RulesChecker;
+use ArrayObject;
 use Cake\ORM\Table;
 use Cake\Utility\Text;
+use Cake\ORM\RulesChecker;
+use Cake\Event\EventInterface;
 use Cake\Validation\Validator;
+use Cake\ORM\Query\SelectQuery;
+use Cake\Datasource\EntityInterface;
 
 class UsersTable extends Table
 {
@@ -19,6 +21,7 @@ class UsersTable extends Table
     $this->setDisplayField('full_name'); // field or virtual field used for default display in associated models, if absent 'id' is assumed
     $this->setPrimaryKey('id'); // Primary key field(s) in table, if absent convention assumes 'id' field
     $this->addBehavior('Timestamp'); // Allows your model to automatically timestamp records on creation/modification with the created/modified fields in your table
+    $this->addBehavior('Sluggable');
   }
 
   public function validationDefault(Validator $validator): Validator
@@ -82,38 +85,11 @@ class UsersTable extends Table
     $rules->add($rules->isUnique(['email']));
       
     return $rules;
-  }     
-
-  public function beforeSave(EventInterface $event, $entity, $options)
-  {
-    // Need to add a value that uniquely identifies the current record
-    $entity->slug = $this->getSlug($entity->full_name, $entity->email);
   }
-
-  /**
-   * Return slugged version of passed in string
-   */
-  protected function getSlug(string $name, string $email): string
+  
+  public function beforeSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
   {
-    $slugCount = 0;
-    $slugNotUnique = true;
-    // set slug
-    $baseSlug = mb_strtolower(Text::slug($name));
-    do {
-      // reset slug
-      $slug = $baseSlug;
-      // if slug count > 0 append slug count
-      if ($slugCount) {
-        $slug .= '-' . $slugCount;
-      }
-      // Check for existing slug with different email
-      if ($this->userExists($slug, $email)) {
-        $slugCount++;
-      } else {
-        $slugNotUnique = false;
-      }
-    } while ($slugNotUnique);
-    return $slug;
+    $entity->slug = $this->getSlug($entity, 'full_name');
   }
 
   /**
@@ -142,16 +118,5 @@ class UsersTable extends Table
       return false;
     }
     return true;
-  }
-
-  /**
-   * Check if user other than current user exists with same slug
-   */
-  protected function userExists(string $slug, string $email): bool
-  {
-    $query = $this->find()
-      ->where(['slug' => $slug])
-      ->where(['email !=' => $email]);
-    return ($query->first() !== null);
   }
 }
