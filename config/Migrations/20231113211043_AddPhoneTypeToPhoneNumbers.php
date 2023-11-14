@@ -15,6 +15,7 @@ class AddPhoneTypeToPhoneNumbers extends AbstractMigration
     public function change(): void
     {
         $table = $this->table('phone_numbers');
+        $table->addColumn('type', 'string', ['limit' => 1, 'null' => false]);
         $table->update();
     }
 }

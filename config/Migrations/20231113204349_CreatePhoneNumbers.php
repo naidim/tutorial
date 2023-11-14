@@ -18,7 +18,6 @@ class CreatePhoneNumbers extends AbstractMigration
     $table->addColumn('user_id', 'integer', ['null' => false])
       ->addColumn('phone_number', 'string', ['limit' => 15, 'null' => false])
       // null is only necessary if false, true is default
-      ->addColumn('type', 'string', ['limit' => 1, 'null' => false])
       ->addTimestamps(); // Adds the modified and created fields
     $table->create();
   }
