@@ -12,6 +12,7 @@ class User extends Entity
   // If you change your table, remember to update your entity class otherwise
   // you won't be able to store data in the new field
   protected array $_accessible = [
+    'dob' => true,
     'username' => true,
     'password' => true,
     'email' => true,
@@ -38,7 +39,7 @@ class User extends Entity
       return $hasher->hash($password);
     }
   }
-  
+ 
   // Accessor for virtual field full_name
   protected function _getFullName()
   {
@@ -55,5 +56,10 @@ class User extends Entity
   protected function _getIsDisabled()
   {
     return $this->role === 'Disabled';
+  }
+
+  protected function _getAge()
+  {
+    return is_null($this->dob) ? 0 : $this->dob->diff(\Cake\I18n\Date::now())->format('%y');
   }
 }

@@ -24,6 +24,10 @@
           <td><?php echo h($user->last_name) ?></td>
         </tr>
         <tr>
+          <th><?php echo __('Date of Birth (age)') ?></th>
+          <td><?php echo h($user->dob) . " ($user->age)" ?></td>
+        </tr>
+        <tr>
           <th><?php echo __('Email') ?></th>
           <td><?php echo $this->Text->autoLinkEmails($user->email) ?></td>
         </tr>

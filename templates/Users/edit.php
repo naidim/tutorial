@@ -25,7 +25,9 @@
         <p class="helper">Passwords must be at least 8 characters and contain at least 1 number, 1 uppercase, 1 lowercase, and 1 special character</p>
         <?php
           echo $this->Form->control('confirm_password', ['type' => 'password', 'value' => '']);
+          echo $this->Form->control('dob', ['label' => 'Date of Birth']);
           echo $this->Form->control('email');
+          echo $this->Form->control('modified');
         ?>
       </fieldset>
       <?php echo $this->Form->button(__('Submit')) ?>
