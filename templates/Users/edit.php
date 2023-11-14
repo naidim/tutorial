@@ -26,6 +26,10 @@
         <?php
           echo $this->Form->control('confirm_password', ['type' => 'password', 'value' => '']);
           echo $this->Form->control('dob', ['label' => 'Date of Birth']);
+          // Only display this field to Admins
+          if ($this->getRequest()->getAttribute('identity')->getOriginalData()->is_admin) {
+            echo $this->Form->control('role');
+          }
           echo $this->Form->control('email');
           echo $this->Form->control('modified');
         ?>

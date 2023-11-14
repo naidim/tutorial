@@ -98,4 +98,7 @@ return [
     'App' => [
         'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'America/New_York'),
     ],
+    'DebugKit' => [
+        'ignoreAuthorization' => true,
+    ],
 ];

@@ -23,6 +23,7 @@ class UsersController extends AppController
 
   public function login()
   {
+    $this->Authorization->skipAuthorization();
     $this->request->allowMethod(['get', 'post']);
     $result = $this->Authentication->getResult();
     // regardless of POST or GET, redirect if user is logged in
@@ -44,6 +45,7 @@ class UsersController extends AppController
 
   public function logout()
   {
+    $this->Authorization->skipAuthorization();
     $result = $this->Authentication->getResult();
     if ($result && $result->isValid()) {
       $this->Authentication->logout();
@@ -58,6 +60,7 @@ class UsersController extends AppController
    */
   public function index()
   {
+    $this->Authorization->skipAuthorization();
     $query = $this->Users->find();
     $users = $this->paginate($query);
     $this->set(compact('users'));
@@ -68,6 +71,7 @@ class UsersController extends AppController
    */    
   public function view($slug = null)
   {
+    $this->Authorization->skipAuthorization();
     $query = $this->Users->findBySlug($slug);
     $user = $query->first();
     $this->set(compact('user'));
@@ -79,6 +83,7 @@ class UsersController extends AppController
   public function add()
   {
     $user = $this->Users->newEmptyEntity();
+    $this->Authorization->authorize($user);
     if ($this->request->is('post')) {
       $user = $this->Users->patchEntity($user, $this->request->getData());
       if ($this->Users->save($user)) {
@@ -98,6 +103,7 @@ class UsersController extends AppController
   public function edit($id = null)
   {
     $user = $this->Users->get($id);
+    $this->Authorization->authorize($user);
     if ($this->request->is(['patch', 'post', 'put'])) {
       if (empty($this->request->getData('password'))) {
         // if password is empty, unset password
@@ -123,6 +129,7 @@ class UsersController extends AppController
   {
     $this->request->allowMethod(['post', 'delete']);
     $user = $this->Users->get($id);
+    $this->Authorization->authorize($user);
     if ($this->Users->delete($user)) {
       $this->Flash->success(__('The user has been deleted.'));
     } else {
