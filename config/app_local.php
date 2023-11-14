@@ -95,4 +95,7 @@ return [
         'timeout' => 12 * 60, // in minutes
         'cookie' => 'tutorial',
     ],
+    'App' => [
+        'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'America/New_York'),
+    ],
 ];
