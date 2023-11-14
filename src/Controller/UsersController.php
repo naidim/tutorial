@@ -42,6 +42,17 @@ class UsersController extends AppController
     }
   }
 
+  public function logout()
+  {
+    $result = $this->Authentication->getResult();
+    if ($result && $result->isValid()) {
+      $this->Authentication->logout();
+      $this->Flash->success('You are now logged out.');
+      return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+  	}
+    return $this->redirect(['action' => 'index']);
+  }
+
   /**
    * Display a list of records
    */
