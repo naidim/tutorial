@@ -35,6 +35,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 </head>
 <body>
     <nav class="top-nav">
+    <?php
+  // If not the login view
+  if ($this->request->getParam('action') !== 'login') {
+    echo $this->element('admin');
+  } ?>
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
         </div>
