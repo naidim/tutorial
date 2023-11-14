@@ -91,7 +91,7 @@ return [
         ],
     ],
     'Session' => [
-        'defaults' => 'php',
+        'defaults' => 'database',
         'timeout' => 12 * 60, // in minutes
         'cookie' => 'tutorial',
     ],
