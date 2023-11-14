@@ -86,17 +86,34 @@ class UsersTable extends Table
 
   public function beforeSave(EventInterface $event, $entity, $options)
   {
-    $entity->slug = $this->getSlug($entity->full_name);
+    // Need to add a value that uniquely identifies the current record
+    $entity->slug = $this->getSlug($entity->full_name, $entity->email);
   }
 
   /**
    * Return slugged version of passed in string
    */
-  protected function getSlug(string $name): string
+  protected function getSlug(string $name, string $email): string
   {
-    $sluggedTitle = Text::slug($name);
-    // lowercase the slug for consistency
-    return mb_strtolower($sluggedTitle);
+    $slugCount = 0;
+    $slugNotUnique = true;
+    // set slug
+    $baseSlug = mb_strtolower(Text::slug($name));
+    do {
+      // reset slug
+      $slug = $baseSlug;
+      // if slug count > 0 append slug count
+      if ($slugCount) {
+        $slug .= '-' . $slugCount;
+      }
+      // Check for existing slug with different email
+      if ($this->userExists($slug, $email)) {
+        $slugCount++;
+      } else {
+        $slugNotUnique = false;
+      }
+    } while ($slugNotUnique);
+    return $slug;
   }
 
   /**
@@ -125,5 +142,16 @@ class UsersTable extends Table
       return false;
     }
     return true;
+  }
+
+  /**
+   * Check if user other than current user exists with same slug
+   */
+  protected function userExists(string $slug, string $email): bool
+  {
+    $query = $this->find()
+      ->where(['slug' => $slug])
+      ->where(['email !=' => $email]);
+    return ($query->first() !== null);
   }
 }
