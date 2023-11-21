@@ -22,6 +22,8 @@ class User extends Entity
     'role' => true,
     'modified' => true,
     'created' => true,
+    'passkey' => true,
+    'timeout' => true,
   ];
   
   // Fields excluded from JSON versions of the entity
