@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\View\JsonView;
 use App\Controller\AppController;
 
 class UsersController extends AppController
@@ -13,12 +14,17 @@ class UsersController extends AppController
     'order' => ['first_name' => 'ASC', 'last_name' => 'ASC']
   ];
 
+  public function viewClasses(): array
+  {
+    return [JsonView::class];
+  }
+
   public function beforeFilter(\Cake\Event\EventInterface $event)
   {
     parent::beforeFilter($event);
     // Configure the login action to not require authentication,
     // preventing the infinite redirect loop issue
-    $this->Authentication->addUnauthenticatedActions(['login', 'logout', 'password', 'resetPassword']);
+    $this->Authentication->addUnauthenticatedActions(['login', 'logout', 'password', 'resetPassword', 'fetch']);
   }
 
   public function login()
@@ -76,6 +82,28 @@ class UsersController extends AppController
     $query = $this->Users->findBySlug($slug);
     $user = $query->first();
     $this->set(compact('user'));
+  }
+
+  /**
+   * Fetch a user as JSON
+   */
+  public function fetch($id = null)
+  {
+    $this->Authorization->skipAuthorization();
+    // If ajax request, use ajax layout
+    if ($this->request->is('ajax')) {
+      $this->viewBuilder()->setClassName('Ajax');
+    }
+    if (empty($id)) {
+      $id = $this->request->getQuery('id');
+    }
+    $data = $this->Users->find()
+      ->where(['id' => $id])
+      ->select('dob')
+      ->first();
+    $this->set(compact('data'));
+    // Serialize our data
+    $this->viewBuilder()->setOption('serialize', ['data']);
   }
   
   /**
