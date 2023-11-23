@@ -14,7 +14,7 @@
             <tbody>
                 <?php foreach ($phoneNumbers as $phoneNumber): ?>
                 <tr>
-                    <td><?= $this->Number->format($phoneNumber->user_id) ?></td>
+                    <td><?= $phoneNumber->user->full_name ?></td>
                     <td><?= h($phoneNumber->phone_number) ?></td>
                     <td><?= h($phoneNumber->type) ?></td>
                     <td class="actions">

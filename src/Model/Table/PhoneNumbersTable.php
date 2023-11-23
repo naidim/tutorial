@@ -23,6 +23,12 @@ class PhoneNumbersTable extends Table
         $this->setDisplayField('phone_number');
         $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
+        // Identify the relationship to the Users table
+        $this->belongsTo('Users', [
+            'foreignKey' => 'user_id',
+            'joinType' => 'INNER',
+        ]);
+
     }
 
      /**

@@ -22,6 +22,8 @@ class UsersTable extends Table
     $this->setPrimaryKey('id'); // Primary key field(s) in table, if absent convention assumes 'id' field
     $this->addBehavior('Timestamp'); // Allows your model to automatically timestamp records on creation/modification with the created/modified fields in your table
     $this->addBehavior('Sluggable');
+    $this->hasMany('PhoneNumbers');
+    $this->hasMany('Documents');
   }
 
   public function validationDefault(Validator $validator): Validator

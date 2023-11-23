@@ -79,7 +79,8 @@ class UsersController extends AppController
   public function view($slug = null)
   {
     $this->Authorization->skipAuthorization();
-    $query = $this->Users->findBySlug($slug);
+    $query = $this->Users->findBySlug($slug)
+      ->contain(['PhoneNumbers']); // Contains the related data
     $user = $query->first();
     $this->set(compact('user'));
   }

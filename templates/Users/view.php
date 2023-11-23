@@ -44,6 +44,30 @@
           <td><?php echo h($user->created) ?></td>
         </tr>
       </table>
+      <div class="related">
+        <?php echo $this->Html->link(__('New Phone Number'), ['controller' => 'phone_numbers', 'action' => 'add'], ['class' => 'button float-right']) ?>
+        <h4><?php echo __('Phone Numbers') ?></h4>
+        <?php if (!empty($user->phone_numbers)) : ?>
+        <div class="table-responsive">
+          <table>
+            <tr>
+              <th><?php echo __('Type') ?></th>
+              <th><?php echo __('Number') ?></th>
+              <th class="actions"><?php echo __('Actions') ?></th>
+            </tr>
+            <?php foreach ($user->phone_numbers as $phone_number) : ?>
+            <tr>
+              <td><?php echo h($phone_number->type) ?></td>
+              <td><?php echo h($phone_number->phone_number) ?></td>
+              <td class="actions">
+                <?php echo $this->Form->postLink(__('Delete'), ['controller' => 'PhoneNumbers', 'action' => 'delete', $phone_number->id], ['confirm' => __('Are you sure you want to delete # {0}?', $phone_number->phone_number)]) ?>
+              </td>
+            </tr>
+            <?php endforeach; ?>
+          </table>
+        </div>
+        <?php endif; ?>
+      </div>
     </div>
   </div>
 </div>

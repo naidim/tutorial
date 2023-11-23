@@ -20,7 +20,9 @@ class PhoneNumbersController extends AppController
      */
     public function index()
     {
-        $query = $this->PhoneNumbers->find();
+        $this->Authorization->skipAuthorization();
+        $query = $this->PhoneNumbers->find()
+            ->contain(['Users']);
         $phoneNumbers = $this->paginate($query);
 
         $this->set(compact('phoneNumbers'));
@@ -40,6 +42,7 @@ class PhoneNumbersController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $phoneNumber = $this->PhoneNumbers->newEmptyEntity();
         if ($this->request->is('post')) {
             $phoneNumber = $this->PhoneNumbers->patchEntity($phoneNumber, $this->request->getData());
@@ -58,6 +61,7 @@ class PhoneNumbersController extends AppController
      */
     public function edit($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $phoneNumber = $this->PhoneNumbers->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $phoneNumber = $this->PhoneNumbers->patchEntity($phoneNumber, $this->request->getData());
@@ -75,6 +79,7 @@ class PhoneNumbersController extends AppController
      */
     public function delete($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $phoneNumber = $this->PhoneNumbers->get($id);
         if ($this->PhoneNumbers->delete($phoneNumber)) {
