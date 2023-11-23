@@ -15,19 +15,38 @@ class PhoneNumbersTable extends Table
 {
     /**
      * Initialize method
-     *
-     * @param array<string, mixed> $config The configuration for the Table.
-     * @return void
      */
     public function initialize(array $config): void
     {
         parent::initialize($config);
-
         $this->setTable('phone_numbers');
         $this->setDisplayField('phone_number');
         $this->setPrimaryKey('id');
-
         $this->addBehavior('Timestamp');
+    }
+
+     /**
+     * Default validation rules.
+     */
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->integer('user_id')
+            ->notEmptyString('user_id');
+
+        $validator
+            ->scalar('phone_number')
+            ->maxLength('phone_number', 15)
+            ->requirePresence('phone_number', 'create')
+            ->notEmptyString('phone_number');
+
+        $validator
+            ->scalar('type')
+            ->maxLength('type', 1)
+            ->requirePresence('type', 'create')
+            ->notEmptyString('type');
+
+        return $validator;
     }
    
     /**
