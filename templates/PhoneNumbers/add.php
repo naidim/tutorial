@@ -18,6 +18,7 @@
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Html->link(__('Cancel'), ['action' => 'index'], ['class' => 'button']); ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
