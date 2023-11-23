@@ -45,7 +45,7 @@
         </tr>
       </table>
       <div class="related">
-        <?php echo $this->Html->link(__('New Phone Number'), ['controller' => 'phone_numbers', 'action' => 'add'], ['class' => 'button float-right']) ?>
+        <?php echo $this->Html->link(__('New Phone Number'), ['controller' => 'phone_numbers', 'action' => 'add', $user->id], ['class' => 'button float-right']) ?>
         <h4><?php echo __('Phone Numbers') ?></h4>
         <?php if (!empty($user->phone_numbers)) : ?>
         <div class="table-responsive">
