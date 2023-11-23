@@ -28,6 +28,9 @@ class PhoneNumbersSeed extends AbstractSeed
     public function run(): void
     {
         $data = [
+            'user_id' => 1,
+            'phone_number' => '(802) 555-1234',
+            'type' => 'C',
         ];
 
         $table = $this->table('phone_numbers');
