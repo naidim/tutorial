@@ -12,9 +12,8 @@ use Authorization\IdentityInterface;
 class UsersTablePolicy
 {
     public function scopeIndex(IdentityInterface $user, $query) {
-        if ($user->getOriginalData()->is_admin) {
-            return;
+        if (!$user->getOriginalData()->is_admin) {
+            return $query->where(['Users.id' => $user->getOriginalData()->id]);
         }
-        return $query->where(['Users.id' => $user->getOriginalData()->id]);
     }   
 }
