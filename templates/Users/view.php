@@ -60,6 +60,7 @@
               <td><?php echo h($phone_number->type) ?></td>
               <td><?php echo h($phone_number->phone_number) ?></td>
               <td class="actions">
+                <?= $this->Html->link(__('Edit'), ['controller' => 'PhoneNumbers', 'action' => 'edit', $phone_number->id]) ?> |
                 <?php echo $this->Form->postLink(__('Delete'), ['controller' => 'PhoneNumbers', 'action' => 'delete', $phone_number->id], ['confirm' => __('Are you sure you want to delete # {0}?', $phone_number->phone_number)]) ?>
               </td>
             </tr>

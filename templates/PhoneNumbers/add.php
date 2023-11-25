@@ -1,6 +1,6 @@
 <?php $this->assign('title', 'Add Phone Number'); ?>
 <div class="row">
-    <div class="column column-80">
+    <div class="column column-100">
         <div class="phoneNumbers form content">
             <?= $this->Form->create($phoneNumber) ?>
             <fieldset>

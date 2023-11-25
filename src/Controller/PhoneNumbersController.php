@@ -20,7 +20,6 @@ class PhoneNumbersController extends AppController
      */
     public function index()
     {
-        $this->Authorization->skipAuthorization();
         $query = $this->PhoneNumbers->find()
             ->contain(['Users']);
         $phoneNumbers = $this->paginate($query);
@@ -29,21 +28,13 @@ class PhoneNumbersController extends AppController
     }
 
     /**
-     * View method
-     */
-    public function view($id = null)
-    {
-        $phoneNumber = $this->PhoneNumbers->get($id);
-        $this->set(compact('phoneNumber'));
-    }
-
-    /**
      * Add method
      */
     public function add($user_id = null)
     {
-        $this->Authorization->skipAuthorization();
         $phoneNumber = $this->PhoneNumbers->newEmptyEntity();
+        $phoneNumber->user_id = $user_id;
+        $this->Authorization->authorize($phoneNumber);
         if ($this->request->is('post')) {
             $phoneNumber = $this->PhoneNumbers->patchEntity($phoneNumber, $this->request->getData());
             if ($this->PhoneNumbers->save($phoneNumber)) {
@@ -67,17 +58,19 @@ class PhoneNumbersController extends AppController
      */
     public function edit($id = null)
     {
-        $this->Authorization->skipAuthorization();
-        $phoneNumber = $this->PhoneNumbers->get($id);
+        $phoneNumber = $this->PhoneNumbers->get($id, ['contain' => ['Users']]);
+        $this->Authorization->authorize($phoneNumber);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $phoneNumber = $this->PhoneNumbers->patchEntity($phoneNumber, $this->request->getData());
             if ($this->PhoneNumbers->save($phoneNumber)) {
                 $this->Flash->success(__('The phone number has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Users', 'action' => 'view', $phoneNumber->user->slug]);
             }
             $this->Flash->error(__('The phone number could not be saved. Please, try again.'));
         }
-        $this->set(compact('phoneNumber'));
+        $users = $this->PhoneNumbers->Users->find('list')->where(['id' => $phoneNumber->user_id])->all();
+        $types = $this->types;
+        $this->set(compact('phoneNumber', 'users', 'types'));
     }
 
     /**
@@ -85,11 +78,11 @@ class PhoneNumbersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $phoneNumber = $this->PhoneNumbers->get($id, [
             'contain' => ['Users'],
         ]);
+        $this->Authorization->authorize($phoneNumber);
         if ($this->PhoneNumbers->delete($phoneNumber)) {
             $this->Flash->success(__('The phone number has been deleted.'));
         } else {
