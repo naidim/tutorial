@@ -68,6 +68,30 @@
         </div>
         <?php endif; ?>
       </div>
+      <div class="related">
+    <?php echo $this->Html->link(__('New Document'), ['controller' => 'Documents', 'action' => 'add', $user->id], ['class' => 'button float-right']) ?>
+    <h3><?php echo __('Documents') ?></h3>
+    <?php if (!empty($user->documents)): ?>
+      <div class="table-responsive">
+        <table>
+          <tr>
+            <th><?php echo __('Name') ?>
+            <th><?php echo __('Description') ?>
+            <th class="actions"><?php echo __('Actions') ?>
+          </tr>
+          <?php foreach ($user->documents as $document): ?>
+          <tr>
+            <td><?php echo $this->Html->link($document->name, '/files/' . $document->filename) ?>
+            <td><?php echo h($document->description) ?></td>
+            <td class="actions">
+              <?php echo $this->Html->link(__('View'), '/files/' . $document->filename) ?> |
+              <?php echo $this->Form->postLink(__('Delete'), ['controller' => 'Documents', 'action' => 'delete', $document->id], ['confirm' => __('Are you sure you want to delete {0}?', $document->name)]) ?>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+      </div>
     </div>
   </div>
 </div>

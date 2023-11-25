@@ -80,7 +80,7 @@ class UsersController extends AppController
   {
     $this->Authorization->skipAuthorization();
     $query = $this->Users->findBySlug($slug)
-      ->contain(['PhoneNumbers']); // Contains the related data
+      ->contain(['PhoneNumbers', 'Documents']); // Contains the related data
     $user = $query->first();
     $this->set(compact('user'));
   }
@@ -139,7 +139,7 @@ class UsersController extends AppController
         // if password is empty, unset password
         $data = $this->request->getData();
         unset($data['password']);
-        $this->request = $this->request->withParsedBody($data);            
+        $this->request = $this->request->withParsedBody($data);
       }
       $user = $this->Users->patchEntity($user, $this->request->getData());
       if ($this->Users->save($user)) {
