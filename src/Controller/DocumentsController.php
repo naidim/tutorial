@@ -33,6 +33,8 @@ class DocumentsController extends AppController
             $this->redirect(['controller' => 'Users', 'action' => 'index']);
         }
         $document = $this->Documents->newEmptyEntity();
+        $document->user_id = $user_id;
+        $this->Authorization->authorize($document);
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $file = $this->request->getUploadedFile('file');
@@ -71,6 +73,7 @@ class DocumentsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $document = $this->Documents->get($id, ['contain' => 'Users']);
+        $this->Authorization->authorize($document);
         // Delete the file
         $filePath = WWW_ROOT . 'files' . DS . $document->filename;
         if (file_exists($filePath)) {
