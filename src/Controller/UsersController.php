@@ -35,6 +35,12 @@ class UsersController extends AppController
     // regardless of POST or GET, redirect if user is logged in
     if ($result && $result->isValid()) {
       $user = $this->Authentication->getIdentity();
+      if ($user->getOriginalData()->is_disabled) {
+        $this->redirect([
+          'controller' => 'Users',
+          'action' => 'logout',
+        ]);
+      }
       $this->Flash->success('You are logged in as ' . $user->full_name);
       // redirect to /users after login success
       $redirect = $this->request->getQuery('redirect', [
