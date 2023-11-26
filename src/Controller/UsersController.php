@@ -85,10 +85,16 @@ class UsersController extends AppController
   public function view($slug = null)
   {
     $this->Authorization->skipAuthorization();
-    $query = $this->Users->findBySlug($slug)
-      ->contain(['PhoneNumbers', 'Documents']); // Contains the related data
+    if (is_numeric($slug)) {
+      $query = $this->Users->findById($slug)
+        ->contain(['PhoneNumbers', 'Documents']); // Contains the related data
+    } else {
+      $query = $this->Users->findBySlug($slug)
+        ->contain(['PhoneNumbers', 'Documents']); // Contains the related data
+    }
     $user = $query->first();
-    $this->set(compact('user'));
+    $neighbors = $this->Users->find('neighbors', ['id' => $user->id])->first();
+    $this->set(compact('user', 'neighbors'));
   }
 
   /**

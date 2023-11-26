@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use ArrayObject;
 use Cake\ORM\Table;
 use Cake\Utility\Text;
+use Cake\Database\Query;
 use Cake\ORM\RulesChecker;
 use Cake\Event\EventInterface;
 use Cake\Validation\Validator;
@@ -120,5 +121,24 @@ class UsersTable extends Table
       return false;
     }
     return true;
+  }
+
+  /**
+   * Find neighbors method
+   */
+  public function findNeighbors(Query $query, array $options): Query
+  {
+    $id = $options['id'];
+    $previous = $this->find()
+      ->select(['slug'])
+      ->where(['id <' => $id])
+      ->orderBy(['id' => 'DESC'])
+      ->limit(1);
+    $next = $this->find()
+      ->select(['slug'])
+      ->where(['id >' => $id])
+      ->orderBy(['id' => 'ASC'])
+      ->limit(1);
+    return $this->find()->select(['prev' => $previous, 'next' => $next]);
   }
 }

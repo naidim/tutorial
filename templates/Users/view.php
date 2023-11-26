@@ -93,6 +93,16 @@
         </table>
         <?php endif; ?>
       </div>
+      <div class="clearfix">
+      <?php
+        if ($neighbors->prev) {
+          echo $this->Html->link('Prev', ['action' => 'view', $neighbors->prev], ['class' => 'float-left button']);
+        }
+        if ($neighbors->next) {
+          echo $this->Html->link('Next', ['action' => 'view', $neighbors->next], ['class' => 'float-right button']);
+        }
+      ?>
+      </div>
     </div>
   </div>
 </div>
